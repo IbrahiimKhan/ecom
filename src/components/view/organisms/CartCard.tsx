@@ -5,13 +5,18 @@ import HStack from '../../ui/layout/HStack';
 import {FastImage} from '../../ui/icons/FastImage';
 import VStack from '../../ui/layout/VStack';
 import Icon from '../../ui/icons/Icon';
-import {Text} from '../../ui/Text';
 import IconButton from '../../ui/icons/IconButton';
+import {Text} from '../../ui/Text';
 
 type CartCardProps = {
   product: CartItem;
+  onRemove: () => void; // Add the onRemove prop
 };
-export const CartCard: FC<CartCardProps> = ({product}): ReactElement => {
+
+export const CartCard: FC<CartCardProps> = ({
+  product,
+  onRemove,
+}): ReactElement => {
   return (
     <Card>
       <HStack>
@@ -33,6 +38,7 @@ export const CartCard: FC<CartCardProps> = ({product}): ReactElement => {
                 icon="delete"
                 color="danger"
                 iconStyle="contained"
+                onPress={onRemove}
               />
               <IconButton
                 variant="vector"

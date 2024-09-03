@@ -15,6 +15,7 @@ import {useHeader} from '../../../hooks/useHeader';
 import {addToCart, fetchProducts} from '../../../store/slices/productSlice';
 import {AppDispatch, RootState} from '../../../store/store';
 import {useNavigation} from '@react-navigation/native';
+import ProductFilter from '../../../components/view/molecules/ProductFilter';
 
 interface ProductScreenProps {}
 
@@ -25,8 +26,15 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const {products, status, error} = useSelector(
     (state: RootState) => state.product,
   );
+
+  const {filteredProducts} = useSelector((state: RootState) => state.product);
+
   const cartLength = useSelector(
     (state: RootState) => state.product.cart.length,
+  );
+
+  const uniqueCategories = Array.from(
+    new Set(products.map(product => product.category)),
   );
 
   const handleAddToCart = (productId: number) => {
@@ -90,23 +98,28 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
           </Box>
         ) : status === 'failed' ? (
           <Box flex={1} justifyContent="center" alignItems="center">
-            <Text variant="b2bold">Error: {error}</Text>
+            <Text variant="b2bold" color="danger">
+              Error: {error}
+            </Text>
           </Box>
         ) : (
-          <FlashList
-            data={products}
-            renderItem={renderProductCard}
-            keyExtractor={item => item.id.toString()}
-            numColumns={2}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            estimatedItemSize={200}
-            ListEmptyComponent={
-              <Box flex={1} justifyContent="center" alignItems="center">
-                <Text>No Products Available</Text>
-              </Box>
-            }
-          />
+          <>
+            <ProductFilter categories={uniqueCategories} />
+            <FlashList
+              data={filteredProducts.length > 0 ? filteredProducts : products}
+              renderItem={renderProductCard}
+              keyExtractor={item => item.id.toString()}
+              numColumns={2}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              estimatedItemSize={200}
+              ListEmptyComponent={
+                <Box flex={1} justifyContent="center" alignItems="center">
+                  <Text>No Products Available</Text>
+                </Box>
+              }
+            />
+          </>
         )}
       </ContentSafeAreaView>
     </Screen>
