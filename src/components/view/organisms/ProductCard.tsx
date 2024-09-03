@@ -16,41 +16,31 @@ type ProductCardProps = {
 };
 
 export const ProductCard: FC<ProductCardProps> = ({product}): ReactElement => {
-  const {title, image, actualPrice, discountPrice} = product;
-  const discountPercentage = Math.floor(
-    ((actualPrice - discountPrice) / actualPrice) * 100,
-  );
-
+  console.log(product.images[0]);
   return (
-    <Card padding={5} flex={1}>
+    <Card padding={5} flex={1} margin={3}>
       <Box alignItems="center">
         <FastImage
           resizeMode="contain"
           height={100}
           width={100}
           source={{
-            uri: image,
+            uri: product.images[0],
           }}
         />
       </Box>
       <Text numberOfLines={2} variant="b4medium" letterSpacing={1} mt={5}>
-        {title}
+        {product.title ?? ''}
       </Text>
-      <VStack mt={5}>
-        <HStack gap={4}>
-          <Text variant="b3bold">{discountPrice}</Text>
-          <Text variant="b5regular" textDecorationLine="line-through">
-            {actualPrice}
-          </Text>
-          <Text color="primary" variant="b5bold">
-            {discountPercentage}% off
-          </Text>
-        </HStack>
-        <HStack alignItems="center" my={3} gap={3}>
-          <Icon variant="vector" type="fa5" icon="tag" size={5} />
-          <Text variant="b5regular">Exchange Offer & more </Text>
-        </HStack>
-      </VStack>
+      <HStack mt={5} justifyContent="space-between">
+        <Text variant="b3regular">${product.price ?? ''}</Text>
+        <Icon
+          icon="add-shopping-cart"
+          color="primary"
+          type="material"
+          variant="vector"
+        />
+      </HStack>
     </Card>
   );
 };
