@@ -80,6 +80,19 @@ const productSlice = createSlice({
         product => product.category === action.payload,
       );
     },
+
+    sortByPriceLowToHigh: state => {
+      state.filteredProducts = [...state.filteredProducts].sort(
+        (a, b) => a.price - b.price,
+      );
+    },
+
+    sortByPriceHighToLow: state => {
+      state.filteredProducts = [...state.filteredProducts].sort(
+        (a, b) => b.price - a.price,
+      );
+    },
+
     clearCart: state => {
       state.cart = [];
       saveCart(state.cart);
@@ -115,7 +128,13 @@ const productSlice = createSlice({
   },
 });
 
-export const {addToCart, removeFromCart, filterByCategory, clearCart} =
-  productSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  filterByCategory,
+  sortByPriceLowToHigh,
+  sortByPriceHighToLow,
+  clearCart,
+} = productSlice.actions;
 
 export default productSlice.reducer;

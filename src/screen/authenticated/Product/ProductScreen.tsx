@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
+import {Picker} from '@react-native-picker/picker'; // Import Picker
 import {FlashList} from '@shopify/flash-list';
 import React, {FC, ReactElement, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
@@ -16,6 +17,8 @@ import {
   addToCart,
   fetchProducts,
   loadCart,
+  sortByPriceLowToHigh,
+  sortByPriceHighToLow,
 } from '../../../store/slices/productSlice';
 import {AppDispatch, RootState} from '../../../store/store';
 import {useNavigation} from '@react-navigation/native';
@@ -25,6 +28,7 @@ interface ProductScreenProps {}
 
 export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState<string>('none');
   const dispatch: AppDispatch = useDispatch();
   const navigation = useNavigation();
   const {products, status, error, filteredProducts, cart} = useSelector(
@@ -58,6 +62,14 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
       clearTimeout(timer);
     };
   }, []);
+
+  useEffect(() => {
+    if (sortOrder === 'asc') {
+      dispatch(sortByPriceLowToHigh());
+    } else if (sortOrder === 'desc') {
+      dispatch(sortByPriceHighToLow());
+    }
+  }, [sortOrder, dispatch]);
 
   const ProductScreenHeader = (): ReactElement => {
     if (loading) {
@@ -106,6 +118,14 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
         ) : (
           <>
             <ProductFilter categories={uniqueCategories} />
+            <Picker
+              selectedValue={sortOrder}
+              onValueChange={itemValue => setSortOrder(itemValue)}
+              style={styles.picker}>
+              <Picker.Item label="Sort by Price" value="none" />
+              <Picker.Item label="Price: Low to High" value="asc" />
+              <Picker.Item label="Price: High to Low" value="desc" />
+            </Picker>
             <FlashList
               data={filteredProducts.length > 0 ? filteredProducts : products}
               renderItem={renderProductCard}
@@ -131,4 +151,13 @@ export default ProductScreen;
 
 const styles = StyleSheet.create({
   badgeText: {position: 'absolute', right: -10, top: -5},
+  picker: {
+    height: 50,
+    width: '100%',
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 10,
+  },
 });
