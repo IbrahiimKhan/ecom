@@ -1,14 +1,15 @@
 import React, {type FC, type ReactElement} from 'react';
 
+import {StyleSheet} from 'react-native';
 import {
   Box,
   Card,
   FastImage,
   HStack,
-  Icon,
   IconButton,
   Text,
 } from '../../../components';
+import theme from '../../../theme';
 import {type Product} from '../../../types/product';
 
 type ProductCardProps = {
@@ -35,7 +36,8 @@ export const ProductCard: FC<ProductCardProps> = ({
       <Text numberOfLines={2} variant="b3medium" letterSpacing={1} mt={5}>
         {product.title ?? ''}
       </Text>
-      <HStack mt={5} justifyContent="space-between">
+      <Text style={styles.category}>{product.category}</Text>
+      <HStack mt={1} justifyContent="space-between">
         <Text variant="heading1">${product.price ?? ''}</Text>
         <IconButton
           onPress={() => handleAddToCart(product.id)}
@@ -52,3 +54,13 @@ export const ProductCard: FC<ProductCardProps> = ({
 };
 
 export default ProductCard;
+
+const styles = StyleSheet.create({
+  category: {
+    backgroundColor: theme.colors.warning,
+    alignSelf: 'flex-start',
+    paddingHorizontal: theme.spacing[4],
+    borderRadius: theme.spacing[5],
+    marginTop: theme.spacing[2],
+  },
+});

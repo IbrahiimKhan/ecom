@@ -10,7 +10,7 @@ import {Text} from '../../ui/Text';
 
 type CartCardProps = {
   product: CartItem;
-  onRemove: () => void; // Add the onRemove prop
+  onRemove: () => void;
 };
 
 export const CartCard: FC<CartCardProps> = ({
@@ -29,9 +29,9 @@ export const CartCard: FC<CartCardProps> = ({
           }}
         />
         <VStack justifyContent="space-between" flex={1}>
-          <HStack justifyContent="space-between" flex={1}>
+          <HStack justifyContent="space-between" flex={1} mr={3}>
             <Text variant="b4semiBold">{product?.title ?? ''}</Text>
-            <HStack>
+            <HStack gap={5}>
               <IconButton
                 variant="vector"
                 type="material"

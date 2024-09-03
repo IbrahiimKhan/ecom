@@ -43,21 +43,9 @@ export const CartScreen: FC<CartScreenProps> = (): ReactElement => {
     }
     return (
       <Header>
-        <Box />
+        <Header.BackAction />
         <Header.Content title="Cart Items" />
-        <Box>
-          <Header.Action
-            icon="cart"
-            variant="vector"
-            color="primary"
-            type="materialCommunity"
-            onPress={() => {}}
-            size={7}
-          />
-          <Text fontWeight="bold" style={styles.badgeText}>
-            {cartLength}
-          </Text>
-        </Box>
+        <Box />
       </Header>
     );
   };

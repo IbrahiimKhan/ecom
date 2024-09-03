@@ -64,7 +64,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
     }
     return (
       <Header>
-        <Header.BackAction />
+        <Box />
         <Header.Content title="All Products" />
         <Box>
           <Header.Action
