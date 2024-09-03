@@ -1,17 +1,17 @@
-import { type ReactElement } from 'react';
+import {type ReactElement} from 'react';
 import React from 'react';
 import {
   ThemeProvider as RestyleThemeProvider,
-  useTheme as useRestyleTheme
+  useTheme as useRestyleTheme,
 } from '@shopify/restyle';
 
-import theme, { type Theme } from './index';
+import theme, {type Theme} from './index';
 
 interface ThemeProviderProps {
   children?: ReactElement;
 }
 
-export const ThemeProvider = ({ children }: ThemeProviderProps): ReactElement => {
+export const ThemeProvider = ({children}: ThemeProviderProps): ReactElement => {
   return <RestyleThemeProvider theme={theme}>{children}</RestyleThemeProvider>;
 };
 
