@@ -8,6 +8,8 @@ import {
   textVariants,
 } from './text-variants';
 
+import {iconButtonVariants} from './icon-button-variants';
+
 import {colors} from './colors';
 
 const {width, height} = Dimensions.get('window');
@@ -77,6 +79,7 @@ const theme = createTheme({
   fontSizes,
   sizes,
   zIndices,
+  iconButtonVariants,
 });
 
 export type Theme = typeof theme;
