@@ -14,12 +14,14 @@ import {
 import {useHeader} from '../../../hooks/useHeader';
 import {addToCart, fetchProducts} from '../../../store/slices/productSlice';
 import {AppDispatch, RootState} from '../../../store/store';
+import {useNavigation} from '@react-navigation/native';
 
 interface ProductScreenProps {}
 
 export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
   const dispatch: AppDispatch = useDispatch();
+  const navigation = useNavigation();
   const {products, status, error} = useSelector(
     (state: RootState) => state.product,
   );
@@ -62,7 +64,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
             variant="vector"
             color="primary"
             type="materialCommunity"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Cart')}
             size={7}
           />
           <Text fontWeight="bold" style={styles.badgeText}>

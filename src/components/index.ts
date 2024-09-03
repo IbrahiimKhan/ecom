@@ -15,3 +15,4 @@ export * from './ui/Card';
 
 //organisms
 export * from './view/organisms/ProductCard';
+export * from './view/organisms/CartCard';
