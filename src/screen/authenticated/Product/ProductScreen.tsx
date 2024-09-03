@@ -1,30 +1,38 @@
 /* eslint-disable react/no-unstable-nested-components */
+import {FlashList} from '@shopify/flash-list';
 import React, {FC, ReactElement, useEffect, useState} from 'react';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   Box,
   ContentSafeAreaView,
   Header,
-  HStack,
   ProductCard,
   Screen,
   Text,
 } from '../../../components';
 import {useHeader} from '../../../hooks/useHeader';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchProducts} from '../../../store/slices/productSlice';
+import {addToCart, fetchProducts} from '../../../store/slices/productSlice';
 import {AppDispatch, RootState} from '../../../store/store';
-import {FlashList} from '@shopify/flash-list';
-import {ActivityIndicator} from 'react-native';
 
 interface ProductScreenProps {}
 
 export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
-
   const dispatch: AppDispatch = useDispatch();
   const {products, status, error} = useSelector(
     (state: RootState) => state.product,
   );
+  const cartLength = useSelector(
+    (state: RootState) => state.product.cart.length,
+  );
+
+  const handleAddToCart = (productId: number) => {
+    const product = products.find(prod => prod.id === productId);
+    if (product) {
+      dispatch(addToCart(product));
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -47,14 +55,20 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
     return (
       <Header>
         <Header.BackAction />
-        <Header.Content title="Products" />
-        <Header.Action
-          icon="home"
-          variant="vector"
-          type="ant"
-          onPress={() => {}}
-          size={7}
-        />
+        <Header.Content title="All Products" />
+        <Box>
+          <Header.Action
+            icon="cart"
+            variant="vector"
+            color="primary"
+            type="materialCommunity"
+            onPress={() => {}}
+            size={7}
+          />
+          <Text fontWeight="bold" style={styles.badgeText}>
+            {cartLength}
+          </Text>
+        </Box>
       </Header>
     );
   };
@@ -62,7 +76,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   useHeader(ProductScreenHeader);
 
   const renderProductCard = ({item}: {item: any}) => (
-    <ProductCard product={item} />
+    <ProductCard product={item} handleAddToCart={id => handleAddToCart(id)} />
   );
 
   return (
@@ -82,8 +96,9 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
             renderItem={renderProductCard}
             keyExtractor={item => item.id.toString()}
             numColumns={2}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             estimatedItemSize={200}
-            contentContainerStyle={{paddingHorizontal: 16}}
             ListEmptyComponent={
               <Box flex={1} justifyContent="center" alignItems="center">
                 <Text>No Products Available</Text>
@@ -97,3 +112,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
 };
 
 export default ProductScreen;
+
+const styles = StyleSheet.create({
+  badgeText: {position: 'absolute', right: -10, top: -5},
+});

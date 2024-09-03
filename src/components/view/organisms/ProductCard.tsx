@@ -6,17 +6,20 @@ import {
   FastImage,
   HStack,
   Icon,
+  IconButton,
   Text,
-  VStack,
 } from '../../../components';
 import {type Product} from '../../../types/product';
 
 type ProductCardProps = {
   product: Product;
+  handleAddToCart: (id: number) => void;
 };
 
-export const ProductCard: FC<ProductCardProps> = ({product}): ReactElement => {
-  console.log(product.images[0]);
+export const ProductCard: FC<ProductCardProps> = ({
+  product,
+  handleAddToCart,
+}): ReactElement => {
   return (
     <Card padding={5} flex={1} margin={3}>
       <Box alignItems="center">
@@ -29,16 +32,19 @@ export const ProductCard: FC<ProductCardProps> = ({product}): ReactElement => {
           }}
         />
       </Box>
-      <Text numberOfLines={2} variant="b4medium" letterSpacing={1} mt={5}>
+      <Text numberOfLines={2} variant="b3medium" letterSpacing={1} mt={5}>
         {product.title ?? ''}
       </Text>
       <HStack mt={5} justifyContent="space-between">
-        <Text variant="b3regular">${product.price ?? ''}</Text>
-        <Icon
+        <Text variant="heading1">${product.price ?? ''}</Text>
+        <IconButton
+          onPress={() => handleAddToCart(product.id)}
           icon="add-shopping-cart"
           color="primary"
           type="material"
+          iconStyle="contained"
           variant="vector"
+          size={9}
         />
       </HStack>
     </Card>
