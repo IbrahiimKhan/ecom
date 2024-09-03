@@ -12,7 +12,11 @@ import {
   Text,
 } from '../../../components';
 import {useHeader} from '../../../hooks/useHeader';
-import {addToCart, fetchProducts} from '../../../store/slices/productSlice';
+import {
+  addToCart,
+  fetchProducts,
+  loadCart,
+} from '../../../store/slices/productSlice';
 import {AppDispatch, RootState} from '../../../store/store';
 import {useNavigation} from '@react-navigation/native';
 import ProductFilter from '../../../components/view/molecules/ProductFilter';
@@ -23,15 +27,11 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const navigation = useNavigation();
-  const {products, status, error} = useSelector(
+  const {products, status, error, filteredProducts, cart} = useSelector(
     (state: RootState) => state.product,
   );
 
-  const {filteredProducts} = useSelector((state: RootState) => state.product);
-
-  const cartLength = useSelector(
-    (state: RootState) => state.product.cart.length,
-  );
+  const cartLength = cart.length;
 
   const uniqueCategories = Array.from(
     new Set(products.map(product => product.category)),
@@ -46,6 +46,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(loadCart());
   }, [dispatch]);
 
   useEffect(() => {
