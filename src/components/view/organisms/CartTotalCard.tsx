@@ -14,7 +14,7 @@ export const CartTotalCard: React.FC<CartTotalCardProps> = ({
   totalAmount,
 }) => {
   return (
-    <Box position="absolute" bottom={0} width="100%">
+    <Box>
       <Card paddingHorizontal={5}>
         <Text variant="heading1" textAlign="center">
           Cart Summary
@@ -30,7 +30,7 @@ export const CartTotalCard: React.FC<CartTotalCardProps> = ({
             Total Amount:
           </Text>
           <Text variant="heading3" color="primary" fontWeight="bold">
-            {totalAmount}
+            {totalAmount.toFixed(2)}
           </Text>
         </HStack>
       </Card>
