@@ -23,6 +23,7 @@ import {
 import {AppDispatch, RootState} from '../../../store/store';
 import {useNavigation} from '@react-navigation/native';
 import ProductFilter from '../../../components/view/molecules/ProductFilter';
+import theme from '../../../theme';
 
 interface ProductScreenProps {}
 
@@ -51,7 +52,7 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(loadCart());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -123,8 +124,8 @@ export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
               onValueChange={itemValue => setSortOrder(itemValue)}
               style={styles.picker}>
               <Picker.Item label="Sort by Price" value="none" />
-              <Picker.Item label="Price: Low to High" value="asc" />
-              <Picker.Item label="Price: High to Low" value="desc" />
+              <Picker.Item label="Low to High" value="asc" />
+              <Picker.Item label="High to Low" value="desc" />
             </Picker>
             <FlashList
               data={filteredProducts.length > 0 ? filteredProducts : products}
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: theme.spacing[7],
     marginBottom: 10,
   },
 });
