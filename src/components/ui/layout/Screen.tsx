@@ -188,7 +188,7 @@ const ScreenWithScrolling = (props: ScreenProps): ReactElement => {
 export const Screen: React.FC<ScreenProps> = props => {
   const {
     loading = false,
-    background = 'primary',
+    background = 'background',
     barBackground = 'transparent',
     barStyle = 'dark-content',
     safeAreaEdges,

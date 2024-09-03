@@ -1,16 +1,60 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Icon} from '../../../components';
+/* eslint-disable react/no-unstable-nested-components */
+import React, {type FC, type ReactElement, useEffect, useState} from 'react';
 
-const ProductScreen = () => {
+import {type AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
+import {
+  Box,
+  ContentSafeAreaView,
+  Header,
+  HStack,
+  Screen,
+} from '../../../components';
+import {useHeader} from '../../../hooks/useHeader';
+
+interface ProductScreenProps
+  extends AuthenticatedStackNavigatorScreenProps<'TransactionHistory'> {}
+
+export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const ProductScreenHeader = (): ReactElement => {
+    if (loading) {
+      return <Box />;
+    }
+    return (
+      <Header>
+        <Header.BackAction />
+        <Header.Content title="Products" />
+        <Header.Action
+          icon="home"
+          variant="vector"
+          type="ant"
+          onPress={() => {}}
+          size={7}
+        />
+      </Header>
+    );
+  };
+
+  useHeader(ProductScreenHeader);
+
   return (
-    <View>
-      <Text>ProductScreen</Text>
-      <Icon variant="vector" type="ant" icon="home" />
-    </View>
+    <Screen preset="auto" safeAreaEdges={['bottom']} loading={loading}>
+      <ContentSafeAreaView gap={6}>
+        <HStack />
+      </ContentSafeAreaView>
+    </Screen>
   );
 };
 
 export default ProductScreen;
-
-const styles = StyleSheet.create({});
