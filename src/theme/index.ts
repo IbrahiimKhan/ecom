@@ -9,6 +9,7 @@ import {
 } from './text-variants';
 
 import {iconButtonVariants} from './icon-button-variants';
+import {cardVariants} from './card-variants';
 
 import {colors} from './colors';
 
@@ -80,6 +81,7 @@ const theme = createTheme({
   sizes,
   zIndices,
   iconButtonVariants,
+  cardVariants,
 });
 
 export type Theme = typeof theme;

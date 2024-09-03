@@ -1,18 +1,17 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, {type FC, type ReactElement, useEffect, useState} from 'react';
 
-import {type AuthenticatedStackNavigatorScreenProps} from '@/types/navigation';
 import {
   Box,
   ContentSafeAreaView,
   Header,
   HStack,
+  ProductCard,
   Screen,
 } from '../../../components';
 import {useHeader} from '../../../hooks/useHeader';
 
-interface ProductScreenProps
-  extends AuthenticatedStackNavigatorScreenProps<'TransactionHistory'> {}
+interface ProductScreenProps {}
 
 export const ProductScreen: FC<ProductScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
