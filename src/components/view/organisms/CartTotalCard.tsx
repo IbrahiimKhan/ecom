@@ -16,6 +16,9 @@ export const CartTotalCard: React.FC<CartTotalCardProps> = ({
   return (
     <Box position="absolute" bottom={0} width="100%">
       <Card paddingHorizontal={5}>
+        <Text variant="heading1" textAlign="center">
+          Cart Summary
+        </Text>
         <HStack my={5} flex={1} justifyContent="space-between">
           <Text variant="heading3">Total Items:</Text>
           <Text variant="heading3" color="primary" fontWeight="bold">
