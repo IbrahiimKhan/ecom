@@ -32,7 +32,11 @@ export const loadCart = createAsyncThunk('products/loadCart', async () => {
 });
 
 const saveCart = async (cart: CartItem[]) => {
-  await AsyncStorage.setItem('cart', JSON.stringify(cart));
+  try {
+    await AsyncStorage.setItem('cart', JSON.stringify(cart));
+  } catch (error) {
+    console.error('Failed to save cart:', error);
+  }
 };
 
 const productSlice = createSlice({
