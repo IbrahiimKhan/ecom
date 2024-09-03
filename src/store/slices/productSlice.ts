@@ -10,6 +10,8 @@ const initialState: ProductState = {
   cart: [],
   status: 'idle',
   error: null,
+  totalItems: 0,
+  totalAmount: 0,
 };
 
 export const fetchProducts = createAsyncThunk(
@@ -24,13 +26,11 @@ export const fetchProducts = createAsyncThunk(
   },
 );
 
-// Load cart from AsyncStorage
 export const loadCart = createAsyncThunk('products/loadCart', async () => {
   const cart = await AsyncStorage.getItem('cart');
   return cart ? (JSON.parse(cart) as CartItem[]) : [];
 });
 
-// Save cart to AsyncStorage
 const saveCart = async (cart: CartItem[]) => {
   await AsyncStorage.setItem('cart', JSON.stringify(cart));
 };
@@ -48,22 +48,29 @@ const productSlice = createSlice({
       } else {
         state.cart.push({...action.payload, quantity: 1});
       }
-      saveCart(state.cart); // Persist cart to AsyncStorage
+      saveCart(state.cart);
+      state.totalItems = state.cart.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      );
+      state.totalAmount = state.cart.reduce(
+        (total, item) => total + item.quantity * item.price,
+        0,
+      );
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.cart = state.cart.filter(item => item.id !== action.payload);
-      saveCart(state.cart); // Persist cart to AsyncStorage
-    },
-    filterByPrice: (
-      state,
-      action: PayloadAction<{min: number; max: number}>,
-    ) => {
-      state.filteredProducts = state.products.filter(
-        product =>
-          product.price >= action.payload.min &&
-          product.price <= action.payload.max,
+      saveCart(state.cart);
+      state.totalItems = state.cart.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      );
+      state.totalAmount = state.cart.reduce(
+        (total, item) => total + item.quantity * item.price,
+        0,
       );
     },
+
     filterByCategory: (state, action: PayloadAction<string>) => {
       state.filteredProducts = state.products.filter(
         product => product.category === action.payload,
@@ -72,6 +79,8 @@ const productSlice = createSlice({
     clearCart: state => {
       state.cart = [];
       saveCart(state.cart);
+      state.totalItems = 0;
+      state.totalAmount = 0;
     },
   },
   extraReducers: builder => {
@@ -90,16 +99,19 @@ const productSlice = createSlice({
       })
       .addCase(loadCart.fulfilled, (state, action) => {
         state.cart = action.payload;
+        state.totalItems = state.cart.reduce(
+          (total, item) => total + item.quantity,
+          0,
+        );
+        state.totalAmount = state.cart.reduce(
+          (total, item) => total + item.quantity * item.price,
+          0,
+        );
       });
   },
 });
 
-export const {
-  addToCart,
-  removeFromCart,
-  filterByPrice,
-  filterByCategory,
-  clearCart,
-} = productSlice.actions;
+export const {addToCart, removeFromCart, filterByCategory, clearCart} =
+  productSlice.actions;
 
 export default productSlice.reducer;

@@ -5,9 +5,12 @@ import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Box,
+  Card,
   CartCard,
+  CartTotalCard,
   ContentSafeAreaView,
   Header,
+  HStack,
   Screen,
   Text,
 } from '../../../components';
@@ -22,9 +25,11 @@ export const CartScreen: FC<CartScreenProps> = (): ReactElement => {
   const [loading, setLoading] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.product.cart);
-
-  const cartLength = useSelector(
-    (state: RootState) => state.product.cart.length,
+  const totalItems = useSelector(
+    (state: RootState) => state.product.totalItems,
+  );
+  const totalAmount = useSelector(
+    (state: RootState) => state.product.totalAmount,
   );
 
   useEffect(() => {
@@ -60,8 +65,12 @@ export const CartScreen: FC<CartScreenProps> = (): ReactElement => {
   );
 
   return (
-    <Screen preset="auto" safeAreaEdges={['bottom']} loading={loading}>
-      <ContentSafeAreaView gap={6}>
+    <Screen
+      preset="auto"
+      safeAreaEdges={['bottom']}
+      loading={loading}
+      contentContainerStyle={{flex: 1}}>
+      <ContentSafeAreaView gap={6} flex={1}>
         <FlashList
           data={cartItems}
           renderItem={renderProductCard}
@@ -72,10 +81,14 @@ export const CartScreen: FC<CartScreenProps> = (): ReactElement => {
           estimatedItemSize={200}
           ListEmptyComponent={
             <Box flex={1} justifyContent="center" alignItems="center">
-              <Text>No Products Available</Text>
+              <Text variant="heading2" color="warning">
+                No Products Available
+              </Text>
             </Box>
           }
         />
+
+        <CartTotalCard totalItems={totalItems} totalAmount={totalAmount} />
       </ContentSafeAreaView>
     </Screen>
   );

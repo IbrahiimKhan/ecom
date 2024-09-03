@@ -6,7 +6,7 @@ export interface Dimensions {
 
 export interface Review {
   comment: string;
-  date: string; // ISO date string
+  date: string;
   rating: number;
   reviewerEmail: string;
   reviewerName: string;
@@ -14,9 +14,9 @@ export interface Review {
 
 export interface Meta {
   barcode: string;
-  createdAt: string; // ISO date string
+  createdAt: string;
   qrCode: string;
-  updatedAt: string; // ISO date string
+  updatedAt: string;
 }
 
 export interface Product {
@@ -54,4 +54,6 @@ export interface ProductState {
   cart: CartItem[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  totalItems: number;
+  totalAmount: number;
 }
