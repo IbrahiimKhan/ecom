@@ -87,7 +87,7 @@ const palette = {
   color70: '#2E2E2E',
   color71: '#242424',
   color72: '#1C1C1C',
-  color73: '#151515'
+  color73: '#151515',
 };
 
 export const colors = {
@@ -186,5 +186,5 @@ export const colors = {
   neutral600: palette.color70,
   neutral70: palette.color71,
   neutral800: palette.color72,
-  neutral900: palette.color73
+  neutral900: palette.color73,
 };
